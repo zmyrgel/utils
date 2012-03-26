@@ -14,3 +14,21 @@
                   (list (cons 'with-open-file
                               (cons (first specs) (rec (rest specs))))))))
      (rec bindings))))
+
+;; File utils
+
+(defun for-lines (fn file)
+  "Executes function f for each line of file and returns the result as a list."
+  (when (probe-file file)
+    (with-open-file (stream file)
+      (loop for line = (read-line stream nil 'eof)
+            until (eq line 'eof)
+            collect (funcall fn line)))))
+
+(defun do-lines (fn file)
+  "Executes function F for each line of FILE."
+  (when (probe-file file)
+    (with-open-file (stream file)
+      (loop for line = (read-line stream nil 'eof)
+            until (eq line 'eof)
+            do (funcall fn line)))))
