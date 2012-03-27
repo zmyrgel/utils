@@ -4,6 +4,12 @@
 
 ;;; "utils" goes here. Hacks and glory await!
 
+(defmacro ql (&rest packages)
+  (dolist (p packages)
+    (ql:quickload p)))
+
+;; File utils
+
 (defmacro with-open-file* (bindings &body body)
   "Evaluates BODY with multiple open files by calling with-open-file
    for each binding in BINDINGS."
