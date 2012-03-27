@@ -17,7 +17,7 @@
 
 ;; File utils
 
-(defun for-lines (fn file)
+(defun map-lines (fn file)
   "Executes function f for each line of file and returns the result as a list."
   (when (probe-file file)
     (with-open-file (stream file)
