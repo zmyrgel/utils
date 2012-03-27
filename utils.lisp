@@ -21,8 +21,6 @@
                               (cons (first specs) (rec (rest specs))))))))
      (rec bindings))))
 
-;; File utils
-
 (defun map-lines (fn file)
   "Executes function f for each line of file and returns the result as a list."
   (when (probe-file file)
@@ -38,3 +36,13 @@
       (loop for line = (read-line stream nil 'eof)
             until (eq line 'eof)
             do (funcall fn line)))))
+
+(defun world-writable (path)
+  (let (files)
+    (osicat:walk-directory path (lambda (f)
+                                  (push f files))
+                           :test (lambda (f)
+                                   (when (and (eq (osicat:file-kind f) :regular-file)
+                                              (member :other-write (osicat:file-permissions f)))
+                                     t)))
+    files))
